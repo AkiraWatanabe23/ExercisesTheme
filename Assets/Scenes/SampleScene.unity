@@ -436,8 +436,9 @@ GameObject:
   m_Component:
   - component: {fileID: 891996737}
   - component: {fileID: 891996738}
+  - component: {fileID: 891996739}
   m_Layer: 0
-  m_Name: Syatem
+  m_Name: System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -473,3 +474,15 @@ MonoBehaviour:
   _squares:
   - {fileID: 8927653646751824507, guid: e2d9b025e8ff8de46b5c8f9f2166d144, type: 3}
   - {fileID: 4920593638002298172, guid: 02674eb9a4ec9394bb32a8901582a29f, type: 3}
+--- !u!114 &891996739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891996736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed32087d30d5ee47b158ad5e303624f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

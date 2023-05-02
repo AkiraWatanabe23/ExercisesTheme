@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour
 {
     private int _currentTurn = 1;
 
+    public int CurrentTurn => _currentTurn;
+
     private void Start()
     {
         _currentTurn = Consts.WHITE;
@@ -17,6 +19,6 @@ public class GameManager : MonoBehaviour
 
     private int ChangeTurn()
     {
-        return _currentTurn * -1;
+        return _currentTurn *= -1;
     }
 }

@@ -7,6 +7,8 @@ public class GameBoard : MonoBehaviour
 
     private int[,] _board = new int[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
 
+    private Rook _rook = new();
+
     private void Awake()
     {
         for (int i = 0; i < Consts.BOARD_SIZE; i++)
@@ -31,11 +33,6 @@ public class GameBoard : MonoBehaviour
 
     private void Start()
     {
-        
-    }
-
-    private void Update()
-    {
-        
+        _rook.Start(_board);
     }
 }

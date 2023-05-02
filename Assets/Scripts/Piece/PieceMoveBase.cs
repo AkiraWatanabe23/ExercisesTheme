@@ -1,4 +1,5 @@
-﻿/// <summary> マス探索の基底クラス
+﻿using System;
+/// <summary> マス探索の基底クラス
 ///           「どの方向に」「何マス進めるか」を返す </summary>
 public abstract class PieceMoveBase
 {
@@ -30,8 +31,15 @@ public abstract class PieceMoveBase
     public virtual int[] PeculiarSearch()
     {
         int moveDir = 0;
-        int count = 0;
+        int countUp = 0;
+        int countDown = 0;
+        int countRight = 0;
+        int countLeft = 0;
 
-        return new int[] { moveDir, count };
+        return new int[] { moveDir, countUp, countDown, countRight, countLeft };
     }
+
+    /// <summary> 探索用のループ
+    ///            (複数回のループでコードが長くなるのを避けるため) </summary>
+    public abstract int SearchLoop(Func<bool> func, Action action);
 }
