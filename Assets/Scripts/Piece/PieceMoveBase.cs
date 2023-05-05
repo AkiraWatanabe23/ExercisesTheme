@@ -4,7 +4,7 @@
 public abstract class PieceMoveBase
 {
     /// <summary> 縦横方向</summary>
-    public virtual int[] VerticalAndHorizontalSearch()
+    public virtual int[] VerticalAndHorizontalSearch(int x, int z)
     {
         int moveDir = 0;
         int countUp = 0;
@@ -16,7 +16,7 @@ public abstract class PieceMoveBase
     }
 
     /// <summary> 斜め方向 </summary>
-    public virtual int[] DiagonalSearch()
+    public virtual int[] DiagonalSearch(int x, int z)
     {
         int moveDir = 0;
         int countUpRight = 0;
@@ -28,7 +28,7 @@ public abstract class PieceMoveBase
     }
 
     /// <summary> Knight専用 </summary>
-    public virtual int[] PeculiarSearch()
+    public virtual int[] PeculiarSearch(int x, int z)
     {
         int moveDir = 0;
         int countUp = 0;
