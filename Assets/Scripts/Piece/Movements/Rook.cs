@@ -5,13 +5,13 @@ using System;
 [Serializable]
 public class Rook : PieceMoveBase
 {
-    private int[,] _board = default;
+    private ChildArray[] _board = default;
     /// <summary> 横方向の探索用 </summary>
     private int _checkHol = 0;
     /// <summary> 縦方向の探索用 </summary>
     private int _checkVer = 0;
 
-    public void Start(int[,] board)
+    public void Start(ChildArray[] board)
     {
         _board = board;
     }
@@ -42,7 +42,7 @@ public class Rook : PieceMoveBase
         for (; func(); action())
         {
             //選択した駒の位置から探索を始める
-            if (_board[_checkHol, _checkVer] == 0)
+            if (_board[_checkHol].Array[_checkVer] == 0)
             {
                 count++;
             }

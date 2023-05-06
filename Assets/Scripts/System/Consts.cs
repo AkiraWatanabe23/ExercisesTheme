@@ -40,6 +40,7 @@ namespace Constants
         BISHOP,
         ROOK,
         QUEEN,
-        KING
+        KING,
+        NONE = 0,
     }
 }

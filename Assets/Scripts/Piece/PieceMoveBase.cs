@@ -1,4 +1,5 @@
 ﻿using System;
+
 /// <summary> マス探索の基底クラス
 ///           「どの方向に」「何マス進めるか」を返す </summary>
 public abstract class PieceMoveBase
