@@ -41,5 +41,5 @@ public abstract class PieceMoveBase
 
     /// <summary> 探索用のループ
     ///            (複数回のループでコードが長くなるのを避けるため) </summary>
-    public abstract int SearchLoop(Func<bool> func, Action action);
+    public abstract int SearchLoop(Func<bool> func, Action action, Action finishedAction);
 }

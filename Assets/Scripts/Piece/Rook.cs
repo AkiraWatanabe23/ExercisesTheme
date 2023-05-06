@@ -21,15 +21,21 @@ public class Rook : PieceMoveBase
         _checkVer = z;
 
         int moveDir = 0;
-        int countUp = SearchLoop(() => _checkVer >= 0, () => _checkVer--);
-        int countDown = SearchLoop(() => _checkVer < Consts.BOARD_SIZE, () => _checkVer++);
-        int countRight = SearchLoop(() => _checkHol < Consts.BOARD_SIZE, () => _checkHol++);
-        int countLeft = SearchLoop(() => _checkHol >= 0, () => _checkHol--);
+
+        int countUp = SearchLoop(() => _checkVer >= 0, () => _checkVer--, () => _checkVer = z);
+        //前回のループで値が変更されているため、初期値に戻す
+        _checkVer = z;
+        int countDown = SearchLoop(() => _checkVer < Consts.BOARD_SIZE, () => _checkVer++, () => _checkVer = z);
+
+        int countRight = SearchLoop(() => _checkHol < Consts.BOARD_SIZE, () => _checkHol++, () => _checkHol = x);
+        //前回のループで値が変更されているため、初期値に戻す
+        _checkHol = x;
+        int countLeft = SearchLoop(() => _checkHol >= 0, () => _checkHol--, () => _checkHol = x);
 
         return new int[] { moveDir, countUp, countDown, countRight, countLeft };
     }
 
-    public override int SearchLoop(Func<bool> func, Action action)
+    public override int SearchLoop(Func<bool> func, Action action, Action finishedAction)
     {
         int count = 0;
 
@@ -42,8 +48,7 @@ public class Rook : PieceMoveBase
             }
 
         }
-        _checkVer = 0;
-        _checkHol = 0;
+        finishedAction();
 
         return count;
     }
