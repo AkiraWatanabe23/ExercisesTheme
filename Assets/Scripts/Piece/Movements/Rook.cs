@@ -1,6 +1,7 @@
 ﻿using Constants;
 using System;
 
+/// <summary> 縦横探索 </summary>
 [Serializable]
 public class Rook : PieceMoveBase
 {
@@ -22,10 +23,14 @@ public class Rook : PieceMoveBase
 
         int moveDir = 0;
 
-        int countUp = SearchLoop(() => _checkVer >= 0, () => _checkVer--, () => _checkVer = z);
-        int countDown = SearchLoop(() => _checkVer < Consts.BOARD_SIZE, () => _checkVer++, () => _checkVer = z);
-        int countRight = SearchLoop(() => _checkHol < Consts.BOARD_SIZE, () => _checkHol++, () => _checkHol = x);
-        int countLeft = SearchLoop(() => _checkHol >= 0, () => _checkHol--, () => _checkHol = x);
+        int countUp
+            = SearchLoop(() => _checkVer >= 0, () => _checkVer--, () => _checkVer = z);
+        int countDown
+            = SearchLoop(() => _checkVer < Consts.BOARD_SIZE, () => _checkVer++, () => _checkVer = z);
+        int countRight
+            = SearchLoop(() => _checkHol < Consts.BOARD_SIZE, () => _checkHol++, () => _checkHol = x);
+        int countLeft
+            = SearchLoop(() => _checkHol >= 0, () => _checkHol--, () => _checkHol = x);
 
         return new int[] { moveDir, countUp, countDown, countRight, countLeft };
     }

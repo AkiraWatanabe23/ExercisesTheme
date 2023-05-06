@@ -7,8 +7,11 @@ public class GameBoard : MonoBehaviour
 
     private int[,] _board = new int[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
 
-    private Rook _rook = new();
-    private Bishop _bishop = new();
+    private readonly Rook _rook = new();
+    private readonly Bishop _bishop = new();
+    private readonly Queen _queen = new();
+
+    public int[,] Board { get => _board; set => _board = value; }
 
     private void Awake()
     {
@@ -29,12 +32,13 @@ public class GameBoard : MonoBehaviour
             }
         }
 
-        //盤面の初期化処理
+        //TODO：盤面の初期化処理
     }
 
     private void Start()
     {
         _rook.Start(_board);
         _bishop.Start(_board);
+        _queen.Start(_board);
     }
 }
