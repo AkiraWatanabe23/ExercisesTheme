@@ -8,6 +8,7 @@ public class GameBoard : MonoBehaviour
     private int[,] _board = new int[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
 
     private Rook _rook = new();
+    private Bishop _bishop = new();
 
     private void Awake()
     {
@@ -34,5 +35,6 @@ public class GameBoard : MonoBehaviour
     private void Start()
     {
         _rook.Start(_board);
+        _bishop.Start(_board);
     }
 }
