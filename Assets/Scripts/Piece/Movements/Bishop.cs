@@ -24,11 +24,11 @@ public class Bishop : PieceMoveBase
         int moveDir = 0;
 
         int countUpRight
-            = SearchLoop(() => _checkHol <= Consts.BOARD_SIZE || _checkVer >= 0,
+            = SearchLoop(() => _checkHol < Consts.BOARD_SIZE || _checkVer >= 0,
                          () => { _checkHol++; _checkVer--; },
                          () => { _checkHol = x; _checkVer = z; });
         int countDownRight
-            = SearchLoop(() => _checkHol <= Consts.BOARD_SIZE || _checkVer <= Consts.BOARD_SIZE,
+            = SearchLoop(() => _checkHol < Consts.BOARD_SIZE || _checkVer < Consts.BOARD_SIZE,
                          () => { _checkHol++; _checkVer++; },
                          () => { _checkHol = x; _checkVer = z; });
         int countUpLeft
@@ -36,7 +36,7 @@ public class Bishop : PieceMoveBase
                          () => { _checkHol--; _checkVer--; },
                          () => { _checkHol = x; _checkVer = z; });
         int countDownLeft
-            = SearchLoop(() => _checkHol >= 0 || _checkVer <= Consts.BOARD_SIZE,
+            = SearchLoop(() => _checkHol >= 0 || _checkVer < Consts.BOARD_SIZE,
                          () => { _checkHol--; _checkVer++; },
                          () => { _checkHol = x; _checkVer = z; });
         

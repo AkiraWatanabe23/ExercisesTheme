@@ -7,6 +7,7 @@ public class GameBoard : MonoBehaviour
 
     private int[,] _board = new int[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
 
+    private readonly Knight _knight = new();
     private readonly Rook _rook = new();
     private readonly Bishop _bishop = new();
     private readonly Queen _queen = new();
@@ -37,6 +38,7 @@ public class GameBoard : MonoBehaviour
 
     private void Start()
     {
+        _knight.Start(_board);
         _rook.Start(_board);
         _bishop.Start(_board);
         _queen.Start(_board);
