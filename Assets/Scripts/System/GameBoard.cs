@@ -39,7 +39,6 @@ public class GameBoard : MonoBehaviour
             }
         }
 
-        //TODO：盤面の初期化処理
         for (int i = 0; i < Consts.BOARD_SIZE; i++)
         {
             for (int j = 0; j < Consts.BOARD_SIZE; j++)

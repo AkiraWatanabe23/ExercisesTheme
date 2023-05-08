@@ -49,6 +49,13 @@ public class Rook : PieceMoveBase
         }
         finishedAction();
 
+        var a = Test(_checkVer = 0);
+
         return count;
+    }
+
+    private int Test<T>(T aaa)
+    {
+        return 0;
     }
 }
