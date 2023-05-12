@@ -14,7 +14,7 @@ public class Sample : MonoBehaviour
         //Debug.Log(null); //nullリテラル（参照なし）
         #endregion
 
-        ulong data = 0b_11001001_00000001_00000001_00010001_00000001_00000001_00000001_00000001;
+        ulong data = 0b_11111111_10000001_10000001_10010001_10000001_10000001_10000001_11111111;
         GenerateMap(data);
     }
 
