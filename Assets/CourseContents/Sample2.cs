@@ -21,7 +21,7 @@ public class Sample2 : MonoBehaviour
             var image = obj.AddComponent<Image>();
             image.color = i == 0 ? Color.red : Color.white;
 
-            _images[i] = obj.GetComponent<Image>();
+            _images[i] = image;
         }
     }
 
