@@ -4,58 +4,26 @@ using UnityEngine.UI;
 public class Sample0602 : MonoBehaviour
 {
     [Min(1)]
-    [SerializeField] private int _row = 1;
+    [SerializeField] private int _rows = 1;
     [Min(1)]
-    [SerializeField] private int _column = 1;
+    [SerializeField] private int _columns = 1;
 
     private Image[,] _images = default;
 
-    private int _holIndex = 0;
     private int _verIndex = 0;
-
-    public int HolIndex
-    {
-        get => _holIndex;
-        set
-        {
-            var oldCell = _images[_verIndex, _holIndex];
-
-            if (value == _column) _holIndex = 0;
-            else if (value < 0) _holIndex = _column - 1;
-            else _holIndex = value;
-
-            var newCell = _images[_verIndex, _holIndex];
-
-            oldCell.color = Color.white;
-            newCell.color = Color.red;
-        }
-    }
-
-    public int VerIndex
-    {
-        get => _verIndex;
-        set
-        {
-            var oldCell = _images[_verIndex, _holIndex];
-
-            if (value == _row) _verIndex = 0;
-            else if (value < 0) _verIndex = _row - 1;
-            else _verIndex = value;
-
-            var newCell = _images[_verIndex, _holIndex];
-
-            oldCell.color = Color.white;
-            newCell.color = Color.red;
-        }
-    }
+    private int _holIndex = 0;
 
     private void Start()
     {
-        _images = new Image[_row, _column];
+        _images = new Image[_rows, _columns];
 
-        for (var r = 0; r < _row; r++)
+        var layout = GetComponent<GridLayoutGroup>();
+        layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        layout.constraintCount = _columns;
+
+        for (var r = 0; r < _rows; r++)
         {
-            for (var c = 0; c < _column; c++)
+            for (var c = 0; c < _columns; c++)
             {
                 var obj = new GameObject($"Cell({r}, {c})");
                 obj.transform.parent = transform;
@@ -74,37 +42,77 @@ public class Sample0602 : MonoBehaviour
     private void Update()
     {
         //各キー入力
-        if (Input.GetKeyDown(KeyCode.LeftArrow))  MoveLeft();
-        if (Input.GetKeyDown(KeyCode.RightArrow)) MoveRight();
-        if (Input.GetKeyDown(KeyCode.UpArrow))    MoveUp();
-        if (Input.GetKeyDown(KeyCode.DownArrow))  MoveDown();
+        if (Input.GetKeyDown(KeyCode.LeftArrow))  TryMoveLeft();
+        if (Input.GetKeyDown(KeyCode.RightArrow)) TryMoveRight();
+        if (Input.GetKeyDown(KeyCode.UpArrow))    TryMoveUp();
+        if (Input.GetKeyDown(KeyCode.DownArrow))  TryMoveDown();
 
         if (Input.GetKeyDown(KeyCode.Space)) RemoveCell();
+    }
+
+    private bool TrySelectCell(int row, int column)
+    {
+        if (row < 0 || row >= _rows ||
+            column < 0 || column >= _columns)
+        {
+            return false;
+        }
+
+        var oldCell = _images[_verIndex, _holIndex];
+        var newCell = _images[row, column];
+
+        if (!newCell.enabled) return false;
+
+        oldCell.color = Color.white;
+        newCell.color = Color.red;
+
+        _verIndex = row;
+        _holIndex = column;
+
+        return true;
     }
 
     private void RemoveCell()
     {
         _images[_verIndex, _holIndex].enabled = false;
         Debug.Log("けした");
+
+        _ = TryMoveLeft() || TryMoveRight() || TryMoveUp() || TryMoveDown();
     }
 
-    private void MoveUp()
+    private bool TryMoveLeft()
     {
-        VerIndex--;
+        for (int c = _holIndex - 1; c >= 0; c--)
+        {
+            if (TrySelectCell(_verIndex, c)) return true;
+        }
+        return false;
     }
 
-    private void MoveDown()
+    private bool TryMoveRight()
     {
-        VerIndex++;
+        for (int c = _holIndex + 1; c < _columns; c++)
+        {
+            if (TrySelectCell(_verIndex, c)) return true;
+        }
+        return false;
     }
 
-    private void MoveLeft()
+    private bool TryMoveUp()
     {
-        HolIndex--;
+        for (int r = _verIndex - 1; r >= 0; r--)
+        {
+            if (TrySelectCell(r, _holIndex)) return true;
+        }
+        return false;
     }
 
-    private void MoveRight()
+    private bool TryMoveDown()
     {
-        HolIndex++;
+        for (int r = _verIndex + 1; r < _rows; r++)
+        {
+            if (TrySelectCell(r, _holIndex)) return true;
+        }
+        return false;
     }
 }
