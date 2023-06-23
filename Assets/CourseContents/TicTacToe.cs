@@ -42,10 +42,10 @@ public class TicTacToe : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) { _selectedColumn--; }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))  { _selectedColumn--; }
         if (Input.GetKeyDown(KeyCode.RightArrow)) { _selectedColumn++; }
-        if (Input.GetKeyDown(KeyCode.UpArrow)) { _selectedRow--; }
-        if (Input.GetKeyDown(KeyCode.DownArrow)) { _selectedRow++; }
+        if (Input.GetKeyDown(KeyCode.UpArrow))    { _selectedRow--; }
+        if (Input.GetKeyDown(KeyCode.DownArrow))  { _selectedRow++; }
 
         if (_selectedColumn < 0) { _selectedColumn = 0; }
         if (_selectedColumn >= Size) { _selectedColumn = Size - 1; }
@@ -64,7 +64,7 @@ public class TicTacToe : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) TrySelectCell();
+        if (Input.GetKeyDown(KeyCode.Space))  TrySelectCell();
         if (Input.GetKeyDown(KeyCode.Escape)) ResetGame();
     }
 
