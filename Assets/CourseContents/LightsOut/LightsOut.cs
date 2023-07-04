@@ -6,7 +6,7 @@ public class LightsOut : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private int _row = 5;
     [SerializeField] private int _column = 5;
-    [SerializeField]private ClearState _state = ClearState.White;
+    [SerializeField] private ColorState _state = ColorState.White;
 
     private Image[,] _cells = default;
     private int _moveCount = 0;
@@ -26,6 +26,7 @@ public class LightsOut : MonoBehaviour, IPointerClickHandler
                 _cells[r, c] = cell.AddComponent<Image>();
             }
         }
+        RandomSetting();
     }
 
     private void Update()
@@ -60,6 +61,32 @@ public class LightsOut : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    /// <summary> 盤の初期化 </summary>
+    private void RandomSetting()
+    {
+        Debug.Log("Setting...");
+        bool isSameColor = true;
+
+        foreach (var cell in _cells)
+        {
+            var color = Random.Range(0, 2);
+            cell.color =
+                color == (int)ColorState.White ? Color.white : Color.black;
+
+            if (_state == ColorState.White)
+            {
+                if (cell.color == Color.white) isSameColor = false;
+            }
+            else if (_state == ColorState.Black)
+            {
+                if (cell.color == Color.black) isSameColor = false;
+            }
+        }
+
+        //全部正解の色ならやり直し
+        if (isSameColor) RandomSetting();
+    }
+
     /// <summary> クリック地点の周囲を見て、色を変換する </summary>
     private void SwitchCell(int r, int c)
     {
@@ -86,7 +113,7 @@ public class LightsOut : MonoBehaviour, IPointerClickHandler
 
         foreach (var cell in _cells)
         {
-            if (_state == ClearState.White)
+            if (_state == ColorState.White)
             {
                 if (cell.color == Color.white) counter++;
             }
@@ -99,7 +126,7 @@ public class LightsOut : MonoBehaviour, IPointerClickHandler
     }
 }
 
-public enum ClearState
+public enum ColorState
 {
     White,
     Black
