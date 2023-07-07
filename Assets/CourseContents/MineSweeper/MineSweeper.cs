@@ -18,6 +18,7 @@ public class MineSweeper : MonoBehaviour
     private Cell _cellPrefab = default;
 
     private Cell[,] _cells = default;
+    private GameState _gameState = GameState.None;
 
     private void Start()
     {
@@ -34,6 +35,9 @@ public class MineSweeper : MonoBehaviour
             {
                 var cell = Instantiate(_cellPrefab);
                 cell.transform.SetParent(parent);
+                cell.name = $"Cell ({r}, {c})";
+                cell.GetComponent<Image>().color = Color.cyan;
+
                 _cells[r, c] = cell;
             }
         }
@@ -45,7 +49,7 @@ public class MineSweeper : MonoBehaviour
             _mineCount = _row * _column / 10;
         }
 
-        for (int i  = 0; i < _mineCount; i++)
+        for (int i = 0; i < _mineCount; i++)
         {
             SelectMine();
         }
@@ -61,7 +65,7 @@ public class MineSweeper : MonoBehaviour
         if (cell.CellState != CellState.Mine)
         {
             cell.CellState = CellState.Mine;
-            SettingNumber(r,c);
+            SettingNumber(r, c);
         }
         else
         {
@@ -74,7 +78,7 @@ public class MineSweeper : MonoBehaviour
     {
         for (int i = -1; i < 2; i++)
         {
-            for (int j  = -1; j < 2; j++)
+            for (int j = -1; j < 2; j++)
             {
                 if (0 <= row + i && row + i < _row &&
                     0 <= column + j && column + j < _column &&
@@ -100,4 +104,11 @@ public enum CellState
     Eight = 8,
 
     Mine = -1,
+}
+
+public enum GameState
+{
+    None,
+    Clear,
+    Failed,
 }
