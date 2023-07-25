@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class MineSweeper : MonoBehaviour
@@ -42,10 +42,10 @@ public class MineSweeper : MonoBehaviour
             }
         }
 
-        //İ’è‚ª‘å‚«‚·‚¬‚½ê‡A©“®“I‚É‘S‘Ì‚Ì 1/10 ‚Ü‚Å§ŒÀ‚·‚é
+        //è¨­å®šãŒå¤§ãã™ããŸå ´åˆã€è‡ªå‹•çš„ã«å…¨ä½“ã® 1/10 ã¾ã§åˆ¶é™ã™ã‚‹
         if (_mineCount > _row * _column)
         {
-            Debug.Log("’n—‹‚Ì”‚ª‘½‚¢‚½‚ß’²®‚µ‚Ü‚·");
+            Debug.Log("åœ°é›·ã®æ•°ãŒå¤šã„ãŸã‚èª¿æ•´ã—ã¾ã™");
             _mineCount = _row * _column / 10;
         }
 
@@ -55,7 +55,7 @@ public class MineSweeper : MonoBehaviour
         }
     }
 
-    /// <summary> ’n—‹‚Ìd•¡‚ğ”ğ‚¯‚é‚½‚ßAƒ}ƒX‚ªd‚È‚Á‚½‚ç‚â‚è’¼‚µ </summary>
+    /// <summary> åœ°é›·ã®é‡è¤‡ã‚’é¿ã‘ã‚‹ãŸã‚ã€ãƒã‚¹ãŒé‡ãªã£ãŸã‚‰ã‚„ã‚Šç›´ã— </summary>
     private void SelectMine()
     {
         var r = Random.Range(0, _row);
@@ -73,7 +73,7 @@ public class MineSweeper : MonoBehaviour
         }
     }
 
-    /// <summary> üˆÍ”ª‹ß–T‚ÌƒJƒEƒ“ƒg‚ğ‘‚â‚· </summary>
+    /// <summary> å‘¨å›²å…«è¿‘å‚ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—ã‚„ã™ </summary>
     private void SettingNumber(int row, int column)
     {
         for (int i = -1; i < 2; i++)
