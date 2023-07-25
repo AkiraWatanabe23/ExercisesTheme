@@ -443,9 +443,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionInterval: 0.5
-  _row: 30
-  _column: 50
-  _startData: 
+  _row: 20
+  _column: 20
   _gridLayoutGroup: {fileID: 721477668}
   _cellPrefab: {fileID: 5553345501822927156, guid: 7c1efb8f33f271d469cb4a5b4119cd7e,
     type: 3}

@@ -13,8 +13,6 @@ public class LifeGame : MonoBehaviour
     private int _column = 0;
 
     [SerializeField]
-    private string _startData = default;
-    [SerializeField]
     private GridLayoutGroup _gridLayoutGroup = default;
     [SerializeField]
     private LifeCell _cellPrefab = default;
@@ -39,10 +37,10 @@ public class LifeGame : MonoBehaviour
                 cell.transform.SetParent(parent);
                 cell.name = $"Cell ({r}, {c})";
 
-                var random = Random.Range(1, 3);
-                cell.CurrentCellState = random == 1 ? LifeCellState.Alive : LifeCellState.Dead;
-                cell.SwitchColor();
+                var random = Random.Range(0, 5);
+                cell.CurrentCellState = random == 0 ? LifeCellState.Alive : LifeCellState.Dead;
                 _cells[r, c] = cell;
+                cell.SettingIndex(r, c);
             }
         }
     }
@@ -57,74 +55,66 @@ public class LifeGame : MonoBehaviour
         }
     }
 
-    private void DataLoad()
-    {
-        //ここで初期設定
-    }
-
     private void MoveToNextGeneration()
     {
-        for (int r = 0; r < _row; r++)
+        foreach (var cell in _cells)
         {
-            for (int c = 0; c < _column; c++)
-            {
-                _cells[r, c].NextCellState = TryCheckAlive(r, c);
-            }
-        }
-
-        for (int r = 0; r < _row; r++)
-        {
-            for (int c = 0; c < _column; c++)
-            {
-                _cells[r, c].CurrentCellState = _cells[r, c].NextCellState;
-                _cells[r, c].SwitchColor();
-            }
+            cell.NextCellState = TryCheckAlive(cell);
         }
     }
 
     /// <summary> 指定したセルが次の世代で生きているか判定する </summary>
     /// <returns> 生きていたらtrue </returns>
-    private LifeCellState TryCheckAlive(int row, int column)
+    private LifeCellState TryCheckAlive(LifeCell lifeCell)
     {
-        int count = TryGetCell(row, column);
-        if (_cells[row, column].CurrentCellState == LifeCellState.Alive)
+        int count = TryGetCellCount(lifeCell);
+        //生存
+        if (lifeCell.CurrentCellState == LifeCellState.Alive && (count == 2 || count == 3))
         {
-            if (count == 2 || count == 3) //生存
-            {
-                return LifeCellState.Alive;
-            }
-            else //過疎、過密
-            {
-                return LifeCellState.Dead;
-            }
+            return LifeCellState.Alive;
         }
-        else if (_cells[row, column].CurrentCellState == LifeCellState.Dead)
+        //過疎、過密
+        else if (lifeCell.CurrentCellState == LifeCellState.Alive && (count <= 1 || count >= 4))
         {
-            if (count == 3) return LifeCellState.Alive; //誕生
+            return LifeCellState.Dead;
+        }
+        //誕生
+        else if (lifeCell.CurrentCellState == LifeCellState.Dead && count == 3)
+        {
+            return LifeCellState.Alive;
         }
 
         return LifeCellState.None;
     }
 
-    private int TryGetCell(int row, int column)
+    private int TryGetCellCount(LifeCell lifeCell)
     {
         int count = 0;
+        var row = lifeCell.XIndex;
+        var column = lifeCell.YIndex;
 
-        for (int r = -1; r <= 1; r++)
-        {
-            for (int c = -1; c <= 1; c++)
-            {
-                if (r == row && c == column) continue;
+        { if (TryGetCell(row - 1, column - 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row - 1, column + 0, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row - 1, column + 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row + 0, column - 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row + 0, column + 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row + 1, column - 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row + 1, column + 0, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        { if (TryGetCell(row + 1, column + 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
 
-                //範囲内で、セルが生きてるか
-                if (0 <= row + r && row + r < _row &&
-                    0 <= column + c && column + c < _column &&
-                    _cells[row + r, column + c].CurrentCellState == LifeCellState.Alive)
-                {
-                    count++;
-                }
-            }
-        }
         return count;
+    }
+
+    private bool TryGetCell(int row, int column, out LifeCell cell)
+    {
+        if (0 <= row && row < _row &&
+            0 <= column && column < _column)
+        {
+            cell = _cells[row, column];
+            return true;
+        }
+
+        cell = null;
+        return false;
     }
 }
