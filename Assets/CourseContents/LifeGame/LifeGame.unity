@@ -388,7 +388,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 20, y: 20}
+  m_CellSize: {x: 40, y: 40}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 20
@@ -442,9 +442,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9be52f2f0434b3747b6e0dd23b2ae75c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPause: 1
   _transitionInterval: 0.5
-  _row: 20
-  _column: 20
+  _row: 100
+  _column: 100
   _gridLayoutGroup: {fileID: 721477668}
   _cellPrefab: {fileID: 5553345501822927156, guid: 7c1efb8f33f271d469cb4a5b4119cd7e,
     type: 3}

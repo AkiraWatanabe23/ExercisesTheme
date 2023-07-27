@@ -6,12 +6,11 @@ public class LifeCell : MonoBehaviour, IPointerClickHandler
 {
     private LifeCellState _currentCellState = LifeCellState.None;
     private LifeCellState _nextCellState = LifeCellState.None;
-    private Image _cellImage = default;
-    private int _xIndex = 0;
-    private int _yIndex = 0;
 
-    public int XIndex => _xIndex;
-    public int YIndex => _yIndex;
+    private Image _cellImage = default;
+
+    public int XIndex { get; private set; }
+    public int YIndex { get; private set; }
 
     public LifeCellState CurrentCellState
     {
@@ -22,31 +21,24 @@ public class LifeCell : MonoBehaviour, IPointerClickHandler
             SwitchColor();
         }
     }
-    public LifeCellState NextCellState
-    {
-        get => _nextCellState;
-        set
-        {
-            _nextCellState = value;
-            _currentCellState = _nextCellState;
-            SwitchColor();
-        }
-    }
+    public LifeCellState NextCellState { get => _nextCellState; set => _nextCellState = value; }
 
     private void OnEnable()
     {
         _cellImage = GetComponent<Image>();
+
+        CurrentCellState = LifeCellState.Dead;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_currentCellState == LifeCellState.Alive)
         {
-            _currentCellState = LifeCellState.Dead;
+            CurrentCellState = LifeCellState.Dead;
         }
         else if (_currentCellState == LifeCellState.Dead)
         {
-            _currentCellState = LifeCellState.Alive;
+            CurrentCellState = LifeCellState.Alive;
         }
     }
 
@@ -64,8 +56,8 @@ public class LifeCell : MonoBehaviour, IPointerClickHandler
 
     public void SettingIndex(int row, int column)
     {
-        _xIndex = row;
-        _yIndex = column;
+        XIndex = row;
+        YIndex = column;
     }
 }
 

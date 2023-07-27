@@ -4,6 +4,9 @@ using UnityEngine.UI;
 public class LifeGame : MonoBehaviour
 {
     [SerializeField]
+    private bool _isPause = false;
+
+    [SerializeField]
     private float _transitionInterval = 1f;
     [Range(10, 100)]
     [SerializeField]
@@ -26,8 +29,8 @@ public class LifeGame : MonoBehaviour
             = GridLayoutGroup.Constraint.FixedColumnCount;
         _gridLayoutGroup.constraintCount = _column;
 
-        _cells = new LifeCell[_row, _column];
         var parent = _gridLayoutGroup.transform;
+        _cells = new LifeCell[_row, _column];
 
         for (var r = 0; r < _row; r++)
         {
@@ -37,8 +40,6 @@ public class LifeGame : MonoBehaviour
                 cell.transform.SetParent(parent);
                 cell.name = $"Cell ({r}, {c})";
 
-                var random = Random.Range(0, 5);
-                cell.CurrentCellState = random == 0 ? LifeCellState.Alive : LifeCellState.Dead;
                 _cells[r, c] = cell;
                 cell.SettingIndex(r, c);
             }
@@ -47,6 +48,8 @@ public class LifeGame : MonoBehaviour
 
     private void Update()
     {
+        if (_isPause) return;
+
         _timer += Time.deltaTime;
         if (_timer >= _transitionInterval)
         {
@@ -61,13 +64,17 @@ public class LifeGame : MonoBehaviour
         {
             cell.NextCellState = TryCheckAlive(cell);
         }
+
+        foreach (var cell in _cells)
+        {
+            cell.CurrentCellState = cell.NextCellState;
+        }
     }
 
-    /// <summary> 指定したセルが次の世代で生きているか判定する </summary>
-    /// <returns> 生きていたらtrue </returns>
+    /// <summary> 指定したセルが次の世代でどうなるか判定する </summary>
     private LifeCellState TryCheckAlive(LifeCell lifeCell)
     {
-        int count = TryGetCellCount(lifeCell);
+        int count = TryGetCellCount(lifeCell.XIndex, lifeCell.YIndex);
         //生存
         if (lifeCell.CurrentCellState == LifeCellState.Alive && (count == 2 || count == 3))
         {
@@ -84,37 +91,35 @@ public class LifeGame : MonoBehaviour
             return LifeCellState.Alive;
         }
 
-        return LifeCellState.None;
+        return lifeCell.CurrentCellState;
     }
 
-    private int TryGetCellCount(LifeCell lifeCell)
+    private int TryGetCellCount(int row, int column)
     {
         int count = 0;
-        var row = lifeCell.XIndex;
-        var column = lifeCell.YIndex;
 
-        { if (TryGetCell(row - 1, column - 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row - 1, column + 0, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row - 1, column + 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row + 0, column - 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row + 0, column + 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row + 1, column - 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row + 1, column + 0, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
-        { if (TryGetCell(row + 1, column + 1, out LifeCell cell) && cell.CurrentCellState == LifeCellState.Alive) count++; }
+        if (TryGetCell(row - 1, column - 1)) count++;
+        if (TryGetCell(row - 1, column + 0)) count++;
+        if (TryGetCell(row - 1, column + 1)) count++;
+        if (TryGetCell(row + 0, column - 1)) count++;
+        if (TryGetCell(row + 0, column + 1)) count++;
+        if (TryGetCell(row + 1, column - 1)) count++;
+        if (TryGetCell(row + 1, column + 0)) count++;
+        if (TryGetCell(row + 1, column + 1)) count++;
 
         return count;
     }
 
-    private bool TryGetCell(int row, int column, out LifeCell cell)
+    private bool TryGetCell(int row, int column)
     {
         if (0 <= row && row < _row &&
             0 <= column && column < _column)
         {
-            cell = _cells[row, column];
-            return true;
+            var cell = _cells[row, column];
+
+            if (cell.CurrentCellState == LifeCellState.Alive) return true;
         }
 
-        cell = null;
         return false;
     }
 }
