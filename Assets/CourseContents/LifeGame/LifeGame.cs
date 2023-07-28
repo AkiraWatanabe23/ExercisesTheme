@@ -3,11 +3,9 @@ using UnityEngine.UI;
 
 public class LifeGame : MonoBehaviour
 {
+    [Range(0.01f, 1f)]
     [SerializeField]
-    private bool _isPause = false;
-
-    [SerializeField]
-    private float _transitionInterval = 1f;
+    private float _transitionInterval = 0.1f;
     [Range(10, 100)]
     [SerializeField]
     private int _row = 0;
@@ -18,8 +16,15 @@ public class LifeGame : MonoBehaviour
     [SerializeField]
     private GridLayoutGroup _gridLayoutGroup = default;
     [SerializeField]
+    private Button _startButton = default;
+    [SerializeField]
+    private Button _pauseButton = default;
+    [SerializeField]
+    private InputField _inputField = default;
+    [SerializeField]
     private LifeCell _cellPrefab = default;
 
+    private bool _isPause = false;
     private float _timer = 0f;
     private LifeCell[,] _cells = default;
 
@@ -28,6 +33,10 @@ public class LifeGame : MonoBehaviour
         _gridLayoutGroup.constraint
             = GridLayoutGroup.Constraint.FixedColumnCount;
         _gridLayoutGroup.constraintCount = _column;
+
+        _startButton.onClick.AddListener(() => GameStart());
+        _pauseButton.onClick.AddListener(() => GamePause());
+        _inputField.onEndEdit.AddListener(SkipGeneration);
 
         var parent = _gridLayoutGroup.transform;
         _cells = new LifeCell[_row, _column];
@@ -44,6 +53,7 @@ public class LifeGame : MonoBehaviour
                 cell.SettingIndex(r, c);
             }
         }
+        _isPause = true;
     }
 
     private void Update()
@@ -91,6 +101,7 @@ public class LifeGame : MonoBehaviour
             return LifeCellState.Alive;
         }
 
+        //変化がない場合は現在のステートを返す
         return lifeCell.CurrentCellState;
     }
 
@@ -122,4 +133,30 @@ public class LifeGame : MonoBehaviour
 
         return false;
     }
+
+    #region UIに設定する関数
+    private void SkipGeneration(string input)
+    {
+        input = _inputField.text;
+        var num = int.Parse(input);
+
+        for (int i = 0; i < num; i++)
+        {
+            MoveToNextGeneration();
+        }
+    }
+
+    private void GameStart()
+    {
+        if (!_isPause) return;
+        _isPause = false;
+
+    }
+
+    private void GamePause()
+    {
+        if (_isPause) return;
+        _isPause = true;
+    }
+    #endregion
 }
