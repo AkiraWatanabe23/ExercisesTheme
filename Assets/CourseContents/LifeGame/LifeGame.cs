@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class LifeGame : MonoBehaviour
 {
+    #region Inspector設定変数
     [Range(0.01f, 1f)]
     [SerializeField]
     private float _transitionInterval = 0.1f;
@@ -20,9 +21,14 @@ public class LifeGame : MonoBehaviour
     [SerializeField]
     private Button _pauseButton = default;
     [SerializeField]
+    private Button _clearButton = default;
+    [SerializeField]
     private InputField _inputField = default;
     [SerializeField]
+    private Text _stateText = default;
+    [SerializeField]
     private LifeCell _cellPrefab = default;
+    #endregion
 
     private bool _isPause = false;
     private float _timer = 0f;
@@ -36,6 +42,7 @@ public class LifeGame : MonoBehaviour
 
         _startButton.onClick.AddListener(() => GameStart());
         _pauseButton.onClick.AddListener(() => GamePause());
+        _clearButton.onClick.AddListener(() => BoardClear());
         _inputField.onEndEdit.AddListener(SkipGeneration);
 
         var parent = _gridLayoutGroup.transform;
@@ -150,6 +157,7 @@ public class LifeGame : MonoBehaviour
     {
         if (!_isPause) return;
         _isPause = false;
+        _stateText.text = "Playing";
 
     }
 
@@ -157,6 +165,12 @@ public class LifeGame : MonoBehaviour
     {
         if (_isPause) return;
         _isPause = true;
+        _stateText.text = "Pause";
+    }
+
+    private void BoardClear()
+    {
+        foreach (var cell in _cells) cell.CurrentCellState = LifeCellState.Dead;
     }
     #endregion
 }
